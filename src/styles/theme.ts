@@ -15,9 +15,9 @@ export const theme = extendTheme({
       "50": "#eeeef2",
     }
   },
-  fonts: {
+  font: {
     heading: "Roboto",
-    body: "Roboto"
+    body: "Roboto",
   },
   styles: {
     global: {
