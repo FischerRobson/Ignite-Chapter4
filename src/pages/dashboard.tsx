@@ -29,7 +29,7 @@ const options: ApexOptions = {
     enabled: false,
   },
   xaxis: {
-    type: 'datetime',
+    type: "datetime",
     axisBorder: {
       color: theme.colors.gray[600]
     },
@@ -37,20 +37,20 @@ const options: ApexOptions = {
       color: theme.colors.gray[600]
     },
     categories: [
-      '2021-04-04T00:00:00.000Z',
-      '2021-04-05T00:00:00.000Z',
-      '2021-04-06T00:00:00.000Z',
-      '2021-04-07T00:00:00.000Z',
-      '2021-04-08T00:00:00.000Z',
-      '2021-04-09T00:00:00.000Z',
-      '2021-04-10T00:00:00.000Z',
+      "2021-04-04T00:00:00.000Z",
+      "2021-04-05T00:00:00.000Z",
+      "2021-04-06T00:00:00.000Z",
+      "2021-04-07T00:00:00.000Z",
+      "2021-04-08T00:00:00.000Z",
+      "2021-04-09T00:00:00.000Z",
+      "2021-04-10T00:00:00.000Z",
     ]
   },
   fill: {
     opacity: 0.3,
-    type: 'gradient',
+    type: "gradient",
     gradient: {
-      shade: 'dark',
+      shade: "dark",
       opacityFrom: 0.7,
       opacityTo: 0.3,
     }
@@ -58,7 +58,7 @@ const options: ApexOptions = {
 }
 
 const series = [
-  { name: 'series1', data: [31, 120, 10, 28, 61, 18, 109] }
+  { name: "series1", data: [31, 120, 10, 28, 61, 18, 109] }
 ];
 
 export default function Dashboard() {
