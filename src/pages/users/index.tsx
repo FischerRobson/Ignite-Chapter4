@@ -11,7 +11,24 @@ import { api } from "../../services/axios/api";
 export default function UserList() {
 
   const { data, isLoading, error } = useQuery("users", async () => {
-    await api.get("/users").then(res => res.data);
+    const data = await api.get("/users")
+      .then(res => res.data)
+      .catch(err => console.log(err));
+
+    const users = data.users.map(user => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        }),
+      };
+    });
+
+    return users;
   }); //metodo para armazenar em cache
 
   const isWideVersion = useBreakpointValue({
@@ -69,31 +86,35 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td px={["4", "4", "6"]}>
-                      <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">Robson Fischer</Text>
-                        <Text fontSize="sm" color="gray.300">fischerrobson@gmail.com</Text>
-                      </Box>
-                    </Td>
-                    {isWideVersion && <Td>09 de abril de 2021</Td>}
-                    {isWideVersion && (
-                      <Td>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="size"
-                          colorScheme="purple"
-                          leftIcon={<Icon as={RiEditLine} fontSize="16" />}
-                        >
-                          Editar
-                        </Button>
-                      </Td>
-                    )}
-                  </Tr>
+                  {data.map(user => {
+                    return (
+                      <Tr key={user.id}>
+                        <Td px={["4", "4", "6"]}>
+                          <Checkbox colorScheme="pink" />
+                        </Td>
+                        <Td>
+                          <Box>
+                            <Text fontWeight="bold">{user.name}</Text>
+                            <Text fontSize="sm" color="gray.300">{user.email}</Text>
+                          </Box>
+                        </Td>
+                        {isWideVersion && <Td>{user.createdAt}</Td>}
+                        {isWideVersion && (
+                          <Td>
+                            <Button
+                              as="a"
+                              size="sm"
+                              fontSize="size"
+                              colorScheme="purple"
+                              leftIcon={<Icon as={RiEditLine} fontSize="16" />}
+                            >
+                              Editar
+                            </Button>
+                          </Td>
+                        )}
+                      </Tr>
+                    )
+                  })}
                 </Tbody>
               </Table>
 
