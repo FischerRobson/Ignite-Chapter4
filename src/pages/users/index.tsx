@@ -1,11 +1,18 @@
-import { Box, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { RiAddLine, RiEditLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
+import { useQuery } from "react-query";
+import { api } from "../../services/axios/api";
 
 export default function UserList() {
+
+  const { data, isLoading, error } = useQuery("users", async () => {
+    await api.get("/users").then(res => res.data);
+  }); //metodo para armazenar em cache
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -40,47 +47,59 @@ export default function UserList() {
             </Link>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" w="8">
-                  <Checkbox colorScheme="pink" />
-                </Th>
-                <Th>Usuário</Th>
-                {isWideVersion && <Th>Data de Cadastro</Th>}
-                {isWideVersion && <Th w="8"></Th>}
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td px={["4", "4", "6"]}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">Robson Fischer</Text>
-                    <Text fontSize="sm" color="gray.300">fischerrobson@gmail.com</Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>09 de abril de 2021</Td>}
-                {isWideVersion && (
-                  <Td>
-                    <Button
-                      as="a"
-                      size="sm"
-                      fontSize="size"
-                      colorScheme="purple"
-                      leftIcon={<Icon as={RiEditLine} fontSize="16" />}
-                    >
-                      Editar
-                    </Button>
-                  </Td>
-                )}
-              </Tr>
-            </Tbody>
-          </Table>
+          {isLoading ? (
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            <Flex justify="center">
+              <Text>Falha ao obter os dados de usuários</Text>
+            </Flex>
+          ) : (
+            <>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={["4", "4", "6"]} color="gray.300" w="8">
+                      <Checkbox colorScheme="pink" />
+                    </Th>
+                    <Th>Usuário</Th>
+                    {isWideVersion && <Th>Data de Cadastro</Th>}
+                    {isWideVersion && <Th w="8"></Th>}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td px={["4", "4", "6"]}>
+                      <Checkbox colorScheme="pink" />
+                    </Td>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Robson Fischer</Text>
+                        <Text fontSize="sm" color="gray.300">fischerrobson@gmail.com</Text>
+                      </Box>
+                    </Td>
+                    {isWideVersion && <Td>09 de abril de 2021</Td>}
+                    {isWideVersion && (
+                      <Td>
+                        <Button
+                          as="a"
+                          size="sm"
+                          fontSize="size"
+                          colorScheme="purple"
+                          leftIcon={<Icon as={RiEditLine} fontSize="16" />}
+                        >
+                          Editar
+                        </Button>
+                      </Td>
+                    )}
+                  </Tr>
+                </Tbody>
+              </Table>
 
-          <Pagination />
+              <Pagination />
+            </>
+          )}
 
         </Box>
       </Flex>
