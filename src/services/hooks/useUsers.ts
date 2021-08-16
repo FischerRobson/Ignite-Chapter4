@@ -1,11 +1,13 @@
 import { useQuery } from "react-query";
-import { api } from "../axios/api";
+import { api } from "../api";
+import { format } from "date-fns";
+import ptBr from 'date-fns/locale/pt-BR'
 
 type User = {
   id: string;
   name: string;
   email: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export async function getUsers(): Promise<User[]> {
@@ -14,15 +16,12 @@ export async function getUsers(): Promise<User[]> {
     .catch(err => console.log(err));
 
   const users = data.users.map(user => {
+    console.log(user)
     return {
       id: user.id,
       name: user.name,
       email: user.email,
-      createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      }),
+      createdAt: format(new Date(user.created_at), "dd MMMM yyyy", { locale: ptBr })
     };
   });
 

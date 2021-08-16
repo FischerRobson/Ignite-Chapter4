@@ -102,7 +102,11 @@ export default function UserList() {
                 </Tbody>
               </Table>
 
-              <Pagination />
+              <Pagination
+                totalCountsOfRegister={200}
+                currentPage={3}
+                onPageChange={() => { }}
+              />
             </>
           )}
 
