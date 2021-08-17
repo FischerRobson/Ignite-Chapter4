@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 import { api } from "../api";
 import { format } from "date-fns";
 import ptBr from 'date-fns/locale/pt-BR'
@@ -45,8 +45,9 @@ export async function getUsers(page: number): Promise<GetUserResponse> {
   };
 }
 
-export function userUsers(page: number) {
-  return useQuery(["users", { page }], () => getUsers(page), {
-    staleTime: 1000 * 5 * 60,
+export function userUsers(page: number, options: UseQueryOptions) {
+  return useQuery(["users", page], () => getUsers(page), {
+    staleTime: 1000 * 60 * 10,
+    ...options,
   }); //metodo para armazenar em cache
 }
