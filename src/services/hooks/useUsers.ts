@@ -10,10 +10,21 @@ type User = {
   createdAt: string;
 }
 
-export async function getUsers(): Promise<User[]> {
-  const data = await api.get("/users")
+type GetUserResponse = {
+  users: User[];
+  totalCount: number;
+}
+
+export async function getUsers(page: number): Promise<GetUserResponse> {
+  const { data, headers } = await api.get("/users", {
+    params: {
+      page,
+    }
+  })
     .then(res => res.data)
     .catch(err => console.log(err));
+
+  const totalCount = Number(headers['x-total-count']);
 
   const users = data.users.map(user => {
     console.log(user)
@@ -25,11 +36,14 @@ export async function getUsers(): Promise<User[]> {
     };
   });
 
-  return users;
+  return {
+    users,
+    totalCount
+  };
 }
 
-export function userUsers() {
-  return useQuery("users", getUsers, {
+export function userUsers(page: number) {
+  return useQuery(["users", page], () => getUsers(page), {
     staleTime: 1000 * 5,
   }); //metodo para armazenar em cache
 }
