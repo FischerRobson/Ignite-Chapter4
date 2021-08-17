@@ -33,7 +33,7 @@ export function makeServer() {
     },
 
     seeds(server) {
-      server.createList('user', 150); //cria 200 usuarios utilizando a factory user
+      server.createList('user', 200); //cria 200 usuarios utilizando a factory user
     },
 
     routes() {
@@ -58,6 +58,7 @@ export function makeServer() {
         );
 
       });
+      this.get('/users/:id');
       this.post('/users');
 
       this.namespace = "";
